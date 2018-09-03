@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Notifications\EmailVerificationNotification;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
@@ -30,10 +31,10 @@ class RegisteredListener implements ShouldQueue
     /**
      * Handle the event.
      *
-     * @param  object  $event
+     * @param Registered|object $event
      * @return void
      */
-    public function handle($event)
+    public function handle(Registered $event)
     {
         // 获取到刚刚注册的用户
         $user = $event->user;

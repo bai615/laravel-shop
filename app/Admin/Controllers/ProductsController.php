@@ -57,7 +57,7 @@ class ProductsController extends Controller
     {
         return Admin::content(function (Content $content) {
 
-            $content->header('header');
+            $content->header('创建商品');
             $content->description('description');
 
             $content->body($this->form());
@@ -75,7 +75,7 @@ class ProductsController extends Controller
 
             $grid->id('ID')->sortable();
             $grid->title('商品名称');
-            $grid->on_sale('已上架')->display(function ($value){
+            $grid->on_sale('已上架')->display(function ($value) {
                 return $value ? '是' : '否';
             });
             $grid->price('价格');
@@ -83,12 +83,12 @@ class ProductsController extends Controller
             $grid->sold_count('销量');
             $grid->review_count('评论数');
 
-            $grid->actions(function ($actions){
+            $grid->actions(function ($actions) {
 //                $actions->disableView();
                 $actions->disableDelete();
             });
-            $grid->tools(function ($tools){
-                $tools->batch(function ($batch){
+            $grid->tools(function ($tools) {
+                $tools->batch(function ($batch) {
                     $batch->disableDelete();
                 });
             });
@@ -105,10 +105,22 @@ class ProductsController extends Controller
     {
         return Admin::form(Product::class, function (Form $form) {
 
-            $form->display('id', 'ID');
+//            $form->display('id', 'ID');
+            $form->text('title', '商品名称')->rules('required');
+            $form->image('image', '封面图片')->rules('required|image');
+            $form->editor('description', '商品描述')->rules('required');
+            $form->radio('on_sale', '上架')->options(['1' => '是', '0' => '否'])->default('0');
+            // 直接添加一对多的关联模型
+            $form->hasMany('skus', 'SKU 列表', function (Form\NestedForm $form) {
+                $form->text('title', 'SKU 名称')->rules('required');
+                $form->text('description', 'SKU 描述')->rules('required');
+                $form->text('price', '单价')->rules('required|numeric|min:0.01');
+                $form->text('stock', '剩余库存')->rules('required|integer|min:0');
+            });
 
-            $form->display('created_at', 'Created At');
-            $form->display('updated_at', 'Updated At');
+            $form->saving(function (Form $form) {
+                $form->model()->price = collect($form->input('skus'))->where(Form::REMOVE_FLAG_NAME, 0)->min('price') ?: 0;
+            });
         });
     }
 }

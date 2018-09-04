@@ -41,11 +41,16 @@ class ProductsController extends Controller
     {
         return Admin::content(function (Content $content) use ($id) {
 
-            $content->header('header');
+            $content->header('编辑商品');
             $content->description('description');
 
             $content->body($this->form()->edit($id));
         });
+    }
+
+    public function update($id)
+    {
+        return $this->form()->update($id);
     }
 
     /**

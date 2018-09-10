@@ -8,17 +8,18 @@ use App\Jobs\CloseOrder;
 use App\Models\Order;
 use App\Models\ProductSku;
 use App\Models\UserAddress;
+use App\Services\CartService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class OrdersController extends Controller
 {
     //
-    public function store(OrderRequest $request)
+    public function store(OrderRequest $request, CartService $cartService)
     {
         $user = $request->user();
         // 开启一个数据库事务
-        $order = \DB::transaction(function () use ($user, $request) {
+        $order = \DB::transaction(function () use ($user, $request, $cartService) {
             $address = UserAddress::find($request->input('address_id'));
             // 更新此地址的最后使用时间
             $address->update(['last_used_at' => Carbon::now()]);
@@ -61,8 +62,9 @@ class OrdersController extends Controller
             $order->update(['total_amount' => $totalAmount]);
 
             // 将下单的商品从购物车中移除
-            $skuIds = collect($request->input('items'))->pluck('sku_id');
-            $user->cartItems()->whereIn('product_sku_id', $skuIds)->delete();
+            $skuIds = collect($request->input('items'))->pluck('sku_id')->all();
+//            $user->cartItems()->whereIn('product_sku_id', $skuIds)->delete();
+            $cartService->remove($skuIds);
 
             return $order;
         });

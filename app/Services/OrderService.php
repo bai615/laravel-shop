@@ -7,6 +7,7 @@ use App\Exceptions\InvalidRequestException;
 use App\Jobs\CloseOrder;
 use App\Models\Order;
 use App\Models\ProductSku;
+use App\Models\User;
 use App\Models\UserAddress;
 use Carbon\Carbon;
 

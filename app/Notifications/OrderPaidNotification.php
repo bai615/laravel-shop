@@ -2,17 +2,28 @@
 
 namespace App\Notifications;
 
+use App\Models\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Support\Str;
-use \Cache;
 
-class EmailVerificationNotification extends Notification implements ShouldQueue
+class OrderPaidNotification extends Notification
 {
     use Queueable;
 
+    protected $order;
+
+    /**
+     * Create a new notification instance.
+     *
+     * @return void
+     */
+    public function __construct(Order $order)
+    {
+        //
+        $this->order = $order;
+    }
 
     /**
      * Get the notification's delivery channels.
@@ -33,16 +44,12 @@ class EmailVerificationNotification extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        // 使用 Laravel 内置的 Str 类生成随机字符串的函数，参数就是要生成的字符串长度
-        $token = Str::random(16);
-        // 往缓存中写入这个随机字符串，有效时间为 30 分钟。
-        Cache::set('email_verification_' . $notifiable->email, $token, 30);
-        $url = route('email_verification.verify', ['email' => $notifiable->email, 'token' => $token]);
         return (new MailMessage)
-            ->greeting($notifiable->name . '您好：')
-            ->subject('注册成功，请验证您的邮箱')
-            ->line('请点击下方链接验证您的邮箱')
-            ->action('验证', $url)
+            ->subject('订单支付成功')// 邮件标题
+            ->greeting($this->order->user->name . '您好：')// 欢迎词
+            ->line('您于 ' . $this->order->created_at->format('m-d H:i') . ' 创建的订单已经支付成功。')// 邮件内容
+            ->action('查看订单', route('orders.show', [$this->order->id]))
+            ->success() // 按钮的色调
             ->line('Thank you for using our application!');
     }
 

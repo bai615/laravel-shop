@@ -55,3 +55,10 @@ Route::get('alipay', function () {
         'subject' => 'test subject - 测试',
     ]);
 });*/
+
+Route::get('qrcode', function(){
+    // 二维码
+    $qrCode = new \Endroid\QrCode\QrCode('123456');
+    // 将生成的二维码图片数据以字符串形式输出，并带上相应的响应类型
+    return response($qrCode->writeString(), 200, ['Content-Type' => $qrCode->getContentType()]);
+});

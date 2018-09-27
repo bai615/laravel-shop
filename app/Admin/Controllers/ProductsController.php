@@ -113,6 +113,7 @@ class ProductsController extends Controller
 //            $form->display('id', 'ID');
             $form->text('title', '商品名称')->rules('required');
             $form->image('image', '封面图片')->rules('required|image');
+//            $form->ueditor('description', '内容')->rules('required');
             $form->editor('description', '商品描述')->rules('required');
             $form->radio('on_sale', '上架')->options(['1' => '是', '0' => '否'])->default('0');
             // 直接添加一对多的关联模型

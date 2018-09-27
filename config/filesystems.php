@@ -62,6 +62,21 @@ return [
             'region' => env('AWS_REGION'),
             'bucket' => env('AWS_BUCKET'),
         ],
+        'oss' => [
+            'driver' => 'oss',
+            'access_id' => env('ALIYUN_ACCESSKEYID'),
+            'access_key' => env('ALIYUN_ACCESSKEYSECRET'),
+            'bucket' => env('ALIYUN_BUCKET'),
+            'endpoint' => env('ALIYUN_ENDPOINT'),
+
+            //'endpoint_internal' => '<internal endpoint [OSS内网节点] 如：oss-cn-shenzhen-internal.aliyuncs.com>',
+
+            //'cdnDomain' => '<CDN domain, cdn域名>',
+
+            'ssl' => false,
+            'isCName' => false,
+            'debug' => false,
+        ],
 
     ],
 

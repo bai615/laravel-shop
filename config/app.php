@@ -188,6 +188,14 @@ return [
          * 阿里云短信
          */
         Mrgoon\AliSms\ServiceProvider::class,
+        /**
+         * 阿里云OSS
+         */
+        Jacobcyl\AliOSS\AliOssServiceProvider::class,
+        /**
+         * 百度编辑器
+         */
+        Stevenyangecho\UEditor\UEditorServiceProvider::class,
     ],
 
     /*
@@ -241,6 +249,14 @@ return [
          * 阿里云短信
          */
         'AliSms'=>Mrgoon\AliSms\ServiceProvider::class,
+        /**
+         * 阿里云OSS
+         */
+        'AliOSS'=>Jacobcyl\AliOSS\AliOssServiceProvider::class,
+        /**
+         * 百度编辑器
+         */
+        'UEditor'=>Stevenyangecho\UEditor\UEditorServiceProvider::class,
     ],
 
 ];

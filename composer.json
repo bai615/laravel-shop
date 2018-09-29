@@ -11,6 +11,7 @@
         "fideloper/proxy": "~3.3",
         "ilimpid/laravel-u-editor": "^1.2",
         "jacobcyl/ali-oss-storage": "^2.1",
+        "jenssegers/mongodb": "3.3",
         "laravel/framework": "5.5.*",
         "laravel/socialite": "^3.1",
         "laravel/tinker": "~1.0",

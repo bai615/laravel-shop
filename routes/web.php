@@ -15,6 +15,7 @@ Route::get('/', 'PagesController@root')->name('root');
 Route::get('products', 'ProductsController@index')->name('products.index');
 
 Route::get('alisms', 'AliSmsController@index')->name('alisms.index');
+Route::get('alioss', 'AliOssController@index')->name('alioss.index');
 
 Route::get('login/github', 'Auth\LoginController@redirectToProvider');
 Route::get('login/github/callback', 'Auth\LoginController@handleProviderCallback');
